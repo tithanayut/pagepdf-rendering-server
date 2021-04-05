@@ -24,7 +24,7 @@ const adapter = new FileSync("db.json");
 const db = low(adapter);
 db.defaults({ tasks: [] }).write();
 
-const exporter = new ElectronPDF();
+const exporter = new ElectronPDF({ resilient: true });
 exporter.on("charged", () => {
 	app.listen(config.PORT, () => {
 		console.log(`Rendering Server is running on port ${config.PORT}`);
