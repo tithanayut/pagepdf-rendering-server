@@ -52,8 +52,6 @@ The server, by default, will start on port 3000. You can custom this by set up a
 		If that is the case, the generated PDF file should be available at `http://localhost:3000/pdf/<id>.pdf`
 
 ## Known issues
- 
- - Prevention of Local File Inclusion (LFI) hasn't been implemented.
  -  Large webpage takes time to generate.
  
 ## Contributing

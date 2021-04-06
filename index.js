@@ -6,6 +6,12 @@ const path = require("path");
 const fs = require("fs");
 const { v4 } = require("uuid");
 
+const PERMITTED_DESTINATIONS = [
+	"https://example.com",
+	"https://www.example.com",
+	"https://example.org/folder/",
+];
+
 const config = {
 	PORT: process.env.PORT || 3000,
 	outputPath: process.env.outputpath || "output",
@@ -51,7 +57,28 @@ exporter.on("charged", () => {
 		const url = req.body.url;
 		const output = path.join(config.outputPath, `${id}.pdf`);
 
-		// TODO: Prevent LFI
+		// Permitted Destinations Check
+		let cont = false;
+		PERMITTED_DESTINATIONS.forEach((target) => {
+			if (url.startsWith(target)) {
+				cont = true;
+			}
+		});
+
+		if (!cont) {
+			const status = 400;
+
+			console.log(`Request #${id} : error - destination not permitted`);
+			if (config.logIncompleteRequest) {
+				db.get("tasks")
+					.push({ id, status, error: "destination not permitted" })
+					.write();
+			}
+
+			return res
+				.status(status)
+				.json({ id, status, error: "destination not permitted" });
+		}
 
 		const jobOptions = {
 			inMemory: false,
