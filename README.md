@@ -4,11 +4,22 @@
 
 ## Installation
 First, please make sure you have npm installed on your machine.
-Next, clone this repository, run `npm install` then `npm start`.
+Next, clone this repository, then run `npm install`.
 ```bash
 git clone https://github.com/tithanayut/pagepdf-rendering-server.git
 cd pagepdf-rendering-server
 npm install
+```
+Now, open `index.js`, add permitted destinations into the array. pagepdf-rendering-server will only process the URL which has the beginning specified in the array.
+```js
+const PERMITTED_DESTINATIONS = [
+	"https://example.com",
+	"https://www.example.com",
+	"https://example.org/folder/",
+];
+```
+After that, run
+```bash
 npm start
 ```
 The server, by default, will start on port 3000. You can custom this by set up an environment variable name PORT as you desire.
